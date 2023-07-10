@@ -10,8 +10,6 @@ import StatsPage from './pages/StatsPage';
 import ApplicationsPage from './pages/ApplicationsPage';
 import SettingsPage from './pages/SettingsPage';
 
-// test 
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
