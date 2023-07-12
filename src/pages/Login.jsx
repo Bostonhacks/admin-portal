@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from "../firebase/firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
-import GoogleIcon from '../components/common/svg/GoogleIcon';
-import Footer from "../components/common/Footer";
+import GoogleIcon from '../components/common/GoogleIcon.svg';
 
 // Login page
 export default function Login() {
@@ -20,10 +19,9 @@ export default function Login() {
   return (
     <div style={{textAlign: "center"}}>
       <button onClick={signInWithGoogle}>
-        <GoogleIcon />Login with Google
+        <img src={GoogleIcon} alt="Google Icon" />Login with Google
       </button>
 
-      <Footer />
     </div>
   );
 }
