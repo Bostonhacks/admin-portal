@@ -19,6 +19,7 @@ export default function Login() {
       if (valid_emails.includes(user.email)) {
         navigate("/stats");
       } else {
+        // Redirect them to the invalid page and signs out of the authentication stage to re-Authenticate
         auth.signOut();
         navigate("/invalid");
       }
