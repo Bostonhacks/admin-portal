@@ -9,19 +9,28 @@ export default function Login() {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
+  // Add or edit this to all valid emails
+  const valid_emails = ["jamesw03@bu.edu"];
+  
   useEffect(() => {
     if (loading) return;
-
-    if (user) navigate("/application");
+    if (user) {
+      // Check if the user is a valid admin
+      if (valid_emails.includes(user.email)) {
+        navigate("/stats");
+      } else {
+        auth.signOut();
+        navigate("/invalid");
+      }
+    }
 
   }, [user, loading, navigate]);
 
   return (
     <div style={{textAlign: "center"}}>
       <button onClick={signInWithGoogle}>
-        <img src={GoogleIcon} alt="Google Icon" />Login with Google
+        <img src={GoogleIcon} alt="Google Icon" style={{ width: "100px" }}/>Login with Google
       </button>
-
     </div>
   );
 }

@@ -10,6 +10,7 @@ import StatsPage from './pages/StatsPage';
 import ApplicationsPage from './pages/ApplicationsPage';
 import SettingsPage from './pages/SettingsPage';
 import Login from './pages/Login';
+import InvalidPage from './pages/Invalid';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="stats" element={<StatsPage />} />
       <Route path="settings" element={<SettingsPage />} />
+      <Route path="invalid" element={<InvalidPage />} />
     </Route>
   )
 );
