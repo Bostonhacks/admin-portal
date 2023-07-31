@@ -77,7 +77,7 @@ const ApplicationsPage = () => {
   const [updatedValues, setUpdatedValues] = useState({});
   const updateDocument = async(event) => {
     console.log(updatedValues);
-    const docRef = doc(db, `test/${selectedDocId}`);
+    const docRef = doc(db, `applications/${selectedDocId}`);
     await setDoc(docRef, updatedValues, { merge:true });
     setOpen(false);
     if (updatedValues != {}) {
@@ -93,7 +93,7 @@ const ApplicationsPage = () => {
 
   const fetchData = async () => {
     
-    const ref = collection(db, "test"); //Temporary database with similar structure. Switch to applications in the final version
+    const ref = collection(db, "applications");
     const querySnapshot = await getDocs(ref);
     const arr = [];
     const documents = [];
