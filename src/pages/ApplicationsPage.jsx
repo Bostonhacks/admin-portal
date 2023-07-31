@@ -15,7 +15,8 @@ const ApplicationsPage = () => {
   const columns = [
     { field: 'col1', headerName: 'ID', flex: 1, headerAlign: 'left' },
     { field: 'col2', headerName: 'Name', flex: 1, headerAlign: 'left' },
-    { field: 'col3', headerName: 'Status', flex: 1, headerAlign: 'left' },
+    { field: 'col3', headerName: 'College', flex: 1, headerAlign: 'left' },
+    { field: 'col4', headerName: 'Status', flex: 1, headerAlign: 'left' },
     { field: 'col5', headerName: 'Actions', flex: 1, headerAlign: 'left', renderCell: (cellValues) => {
       return (
         <Stack direction="row" spacing={2}> 
@@ -59,7 +60,7 @@ const ApplicationsPage = () => {
   const handleUserDeletion = async(event) => {
     console.log(selectedDocId);
     event.stopPropagation();
-    const ref = doc(db, `applications/${selectedDocId}`);
+    const ref = doc(db, `test/${selectedDocId}`);
     const query = await deleteDoc(ref);
     setRowData((prevPosts) => prevPosts.filter((_, index) => index != currentRowId ));
     resetStateVariables();
@@ -83,7 +84,7 @@ const ApplicationsPage = () => {
   const [updatedValues, setUpdatedValues] = useState({});
   const updateDocument = async(event) => {
     console.log(updatedValues);
-    const docRef = doc(db, `applications/${selectedDocId}`);
+    const docRef = doc(db, `test/${selectedDocId}`);
     await setDoc(docRef, updatedValues, { merge:true });
     setOpen(false);
     var temp = allDocuments;
@@ -91,12 +92,17 @@ const ApplicationsPage = () => {
     setAllDocuments(temp);
     if ('status' in updatedValues) {
       temp = [...rowData];
-      temp[currentRowId] = {...temp[currentRowId], col3: updatedValues['status']};
+      temp[currentRowId] = {...temp[currentRowId], col4: updatedValues['status']};
       setRowData(temp);
     }
     else if ('name' in updatedValues) {
       temp = [...rowData];
       temp[currentRowId] = {...temp[currentRowId], col2: updatedValues['name']};
+      setRowData(temp)
+    }
+    else if ('college' in updatedValues) {
+      temp = [...rowData];
+      temp[currentRowId] = {...temp[currentRowId], col3: updatedValues['college']['value']};
       setRowData(temp)
     }
     setUpdatedValues({});
@@ -109,14 +115,14 @@ const ApplicationsPage = () => {
 
   const fetchData = async () => {
     
-    const ref = collection(db, "applications");
+    const ref = collection(db, "test");
     const querySnapshot = await getDocs(ref);
     const arr = [];
     const documents = [];
     var counter = 0;
     querySnapshot.forEach((doc) => {
       arr.push({
-        id: counter, col1: doc.id, col2: doc.get('name'), col3: doc.get('status')
+        id: counter, col1: doc.id, col2: doc.get('name'), col3: doc.get('college.value'), col4: doc.get('status')
       });
       counter += 1;
       var obj = {};
