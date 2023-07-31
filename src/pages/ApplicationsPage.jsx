@@ -60,7 +60,7 @@ const ApplicationsPage = () => {
   const handleUserDeletion = async(event) => {
     console.log(selectedDocId);
     event.stopPropagation();
-    const ref = doc(db, `test/${selectedDocId}`);
+    const ref = doc(db, `applications/${selectedDocId}`);
     const query = await deleteDoc(ref);
     setRowData((prevPosts) => prevPosts.filter((_, index) => index != currentRowId ));
     resetStateVariables();
@@ -84,7 +84,7 @@ const ApplicationsPage = () => {
   const [updatedValues, setUpdatedValues] = useState({});
   const updateDocument = async(event) => {
     console.log(updatedValues);
-    const docRef = doc(db, `test/${selectedDocId}`);
+    const docRef = doc(db, `applications/${selectedDocId}`);
     await setDoc(docRef, updatedValues, { merge:true });
     setOpen(false);
     var temp = allDocuments;
@@ -115,7 +115,7 @@ const ApplicationsPage = () => {
 
   const fetchData = async () => {
     
-    const ref = collection(db, "test");
+    const ref = collection(db, "applications");
     const querySnapshot = await getDocs(ref);
     const arr = [];
     const documents = [];
