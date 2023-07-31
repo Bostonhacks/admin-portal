@@ -176,24 +176,23 @@ const ApplicationsPage = () => {
         <DialogContent>
           {Object.keys(selectedDoc).sort().map((key) => {
             if (typeof selectedDoc[key] == 'object') {
-              return Object.keys(selectedDoc[key]).map((innerKey) => {
                 return (<TextField 
                   autoFocus
                   margin="dense"
-                  key={`${key}/${innerKey}`}
-                  id={`${key}/${innerKey}`}
-                  label={`${key}/${innerKey}`}
+                  key={key}
+                  id={key}
+                  label={key}
                   fullWidth
                   variant="standard"
-                  defaultValue={selectedDoc[key][innerKey]}
+                  defaultValue={selectedDoc[key]['label']}
                   onChange={e => {
                     var tempObject = updatedValues;
                     tempObject[key] = {...tempObject[key]};
-                    tempObject[key][innerKey] = e.target.value;
+                    tempObject[key]['label'] = e.target.value;
+                    tempObject[key]['value'] = e.target.value;
                     setUpdatedValues(tempObject);
                   }}
                 />)
-                })
               }
             else {
               return (<TextField 
