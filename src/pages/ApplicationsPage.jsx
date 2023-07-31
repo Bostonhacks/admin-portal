@@ -40,21 +40,29 @@ const ApplicationsPage = () => {
       );
     } }
   ];
+
+  function resetStateVariables() {
+    setOpen(false);
+    setAlertOpen(false);
+    setSelectedDocId('');
+    setCurrentRowId(0);
+    setSelectedDoc({'temp': 'temp'});
+  }
   
   const [alertOpen, setAlertOpen] = useState(false);
-  const [currentDocId, setCurrentDocId] = useState(0);
+  const [currentRowId, setCurrentRowId] = useState(0);
   const handleAlertClick = (event, row) => {
     setAlertOpen(true);
     setSelectedDocId(row['col1']);
-    setCurrentDocId(row.id);
+    setCurrentRowId(row.id);
   }
   const handleUserDeletion = async(event) => {
     console.log(selectedDocId);
     event.stopPropagation();
-    const ref = doc(db, `test/${selectedDocId}`);
+    const ref = doc(db, `applications/${selectedDocId}`);
     const query = await deleteDoc(ref);
-    setRowData((prevPosts) => prevPosts.filter((_, index) => index != currentDocId ));
-    setAlertOpen(false);
+    setRowData((prevPosts) => prevPosts.filter((_, index) => index != currentRowId ));
+    resetStateVariables();
   }
 
   const [open, setOpen] = useState(false);
@@ -64,14 +72,12 @@ const ApplicationsPage = () => {
   const handleOpen = async (event, row) => {
     setSelectedDocId(row['col1']);
     setSelectedDoc(allDocuments[row['id']][row['col1']]);
+    setCurrentRowId(row.id);
     setOpen(true);
   }
 
   const handleClose = () => {
-    setOpen(false);
-    setAlertOpen(false);
-    setSelectedDocId('');
-    setCurrentDocId(0);
+    resetStateVariables();
   };
   
   const [updatedValues, setUpdatedValues] = useState({});
@@ -80,11 +86,21 @@ const ApplicationsPage = () => {
     const docRef = doc(db, `applications/${selectedDocId}`);
     await setDoc(docRef, updatedValues, { merge:true });
     setOpen(false);
-    if (updatedValues != {}) {
-      fetchData();
+    var temp = allDocuments;
+    temp[currentRowId][selectedDocId] = {...allDocuments[currentRowId][selectedDocId], ...updatedValues};
+    setAllDocuments(temp);
+    if ('status' in updatedValues) {
+      temp = [...rowData];
+      temp[currentRowId] = {...temp[currentRowId], col3: updatedValues['status']};
+      setRowData(temp);
+    }
+    else if ('name' in updatedValues) {
+      temp = [...rowData];
+      temp[currentRowId] = {...temp[currentRowId], col2: updatedValues['name']};
+      setRowData(temp)
     }
     setUpdatedValues({});
-    
+    resetStateVariables();
   }
 
   const [rowData, setRowData] = useState([]);
